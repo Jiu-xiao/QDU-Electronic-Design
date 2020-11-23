@@ -20,6 +20,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "stdio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -408,10 +409,10 @@ static void MX_GPIO_Init(void)
 void Task_center_f(void *argument)
 {
   /* USER CODE BEGIN 5 */
+  printf("center initing..\n");
   /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
+  while(1){
+    ;
   }
   /* USER CODE END 5 */
 }
@@ -426,10 +427,10 @@ void Task_center_f(void *argument)
 void Task_key_scan_f(void *argument)
 {
   /* USER CODE BEGIN Task_key_scan_f */
+  printf("key scan initing..\n");
   /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
+  while(1){
+    ;
   }
   /* USER CODE END Task_key_scan_f */
 }
@@ -444,10 +445,10 @@ void Task_key_scan_f(void *argument)
 void Task_NTC_scan_f(void *argument)
 {
   /* USER CODE BEGIN Task_NTC_scan_f */
+  printf("NTC scan initing..\n");
   /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
+  while(1){
+    ;
   }
   /* USER CODE END Task_NTC_scan_f */
 }
@@ -463,9 +464,10 @@ void Task_led_f(void *argument)
 {
   /* USER CODE BEGIN Task_led_f */
   /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
+  printf("led initing..\n");
+  /* Infinite loop */
+  while(1){
+    ;
   }
   /* USER CODE END Task_led_f */
 }
@@ -480,10 +482,10 @@ void Task_led_f(void *argument)
 void Task_display_f(void *argument)
 {
   /* USER CODE BEGIN Task_display_f */
+  printf("display initing..\n");
   /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
+  while(1){
+    ;
   }
   /* USER CODE END Task_display_f */
 }
@@ -499,9 +501,10 @@ void Task_output_f(void *argument)
 {
   /* USER CODE BEGIN Task_output_f */
   /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
+  printf("output initing..\n");
+  /* Infinite loop */
+  while(1){
+    ;
   }
   /* USER CODE END Task_output_f */
 }
