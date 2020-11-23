@@ -116,6 +116,12 @@ void Task_output_f(void *argument);
   * @brief  The application entry point.
   * @retval int
   */
+int fputc(int ch,FILE *f)
+{
+    uint8_t temp[1]={ch};
+    HAL_UART_Transmit(&huart1,temp,1,2);
+    return 0;
+}
 int main(void)
 {
   /* USER CODE BEGIN 1 */
