@@ -519,10 +519,18 @@ void Task_key_scan_f(void *argument) {
   printf("key scan initing..\r\n");
   osKernelUnlock();
   uint32_t tick = osKernelGetTickCount();
+  int sign=0,a;
+  key_mode_t key_mode;
   /* Infinite loop */
   while (1) {
-    // get_key(); TODO
-    osMessageQueuePut(message.key, &key, 0, 0);
+    a=HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_6);
+    if(a&&sign>0)sign--;
+    if(!a&&sign==0){
+      key_mode=key_work_mode;
+      osMessageQueuePut(message.key,&key_mode,NULL,0);
+      sign=30;
+      printf("input\r\n");
+    }
     tick+=5;
     osDelayUntil(tick);
   }
