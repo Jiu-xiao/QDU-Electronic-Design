@@ -396,6 +396,7 @@ void Task_center_f(void *argument) {
   osKernelLock();
   printf("center initing..\r\n");
   data_t data = {0};
+  data.mode = relax_mode;
   message.display = osMessageQueueNew(6u, sizeof(display_t), NULL);
   message.key = osMessageQueueNew(6u, sizeof(key_t), NULL);
   message.led = osMessageQueueNew(6u, sizeof(led_t), NULL);
@@ -407,8 +408,28 @@ void Task_center_f(void *argument) {
   osMessageQueuePut(message.ntc, &data.ntc, 0, 0);
   osMessageQueuePut(message.pwm, &data.pwm, 0, 0);
   osKernelUnlock();
+
   /* Infinite loop */
   while (1) {
+    if (osMessageQueueGet(message.key, &data.key, NULL, 1) ==
+        osOK) /* 有按键按下 */ {
+      // do something
+    }
+    osMessageQueueGet(message.ntc, &data.ntc, NULL, 1); /* 实时刷新温度 */
+    // do something
+    osMessageQueuePut(message.display, &data.display, 0, 0);
+    osMessageQueuePut(message.led, &data.led, 0, 0);
+    switch (data.mode) {
+      case relax_mode: /* pwm:0 */
+        break;
+      case sleep_mode: /* pwm:20 */
+        break;
+      case nature_mode: /* pwm:30 */
+        break;
+      case common_mode: /* pwm:70 */
+        break;
+    }
+    osMessageQueuePut(message.pwm, &data.pwm, 0, 0);
     osDelay(1000);
     osKernelLock();
     printf("center is here\r\n");
