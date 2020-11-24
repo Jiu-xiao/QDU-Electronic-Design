@@ -400,6 +400,7 @@ void Task_center_f(void *argument) {
   data.mode = relax_mode;
   data.timeing_mode=zero;
   data.display_mode=work;
+  data.key=key_work_mode;
   message.display = osMessageQueueNew(6u, sizeof(display_t), NULL);
   message.key = osMessageQueueNew(6u, sizeof(key_mode_t), NULL);
   message.led = osMessageQueueNew(6u, sizeof(led_t), NULL);
@@ -408,10 +409,10 @@ void Task_center_f(void *argument) {
   osMessageQueuePut(message.display, &data.display, 0, 0);
   osMessageQueuePut(message.led, &data.led, 0, 0);
   osMessageQueuePut(message.key, &data.key, 0, 0);
+  osMessageQueuePut(message.key, &data.key, 0, 0);
   osMessageQueuePut(message.ntc, &data.ntc, 0, 0);
   osMessageQueuePut(message.pwm, &data.pwm, 0, 0);
   osKernelUnlock();
-
   /* Infinite loop */
   while (1) {
     uint32_t tick = osKernelGetTickCount();
@@ -497,9 +498,6 @@ void Task_center_f(void *argument) {
     }
     osMessageQueuePut(message.pwm, &data.pwm, 0, 0);
     osMessageQueuePut(message.led, &data.led, 0, 0);
-    osKernelLock();
-    printf("01\r\n");
-    osKernelUnlock();
     tick+=20;
     osDelayUntil(tick);
   }
@@ -515,19 +513,16 @@ void Task_center_f(void *argument) {
 /* USER CODE END Header_Task_key_scan_f */
 void Task_key_scan_f(void *argument) {
   /* USER CODE BEGIN Task_key_scan_f */
+  key_mode_t key;
+  osMessageQueueGet(message.key, &key, NULL, osWaitForever);
   osKernelLock();
   printf("key scan initing..\r\n");
   osKernelUnlock();
-  key_mode_t key;
-  osMessageQueueGet(message.key, &key, NULL, 100);
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
   while (1) {
     // get_key(); TODO
     osMessageQueuePut(message.key, &key, 0, 0);
-    osKernelLock();
-    printf("02\r\n");
-    osKernelUnlock();
     tick+=5;
     osDelayUntil(tick);
   }
@@ -543,20 +538,17 @@ void Task_key_scan_f(void *argument) {
 /* USER CODE END Header_Task_NTC_scan_f */
 void Task_NTC_scan_f(void *argument) {
   /* USER CODE BEGIN Task_NTC_scan_f */
+  NTC_t ntc;
+  osMessageQueueGet(message.ntc, &ntc, NULL, osWaitForever);
   osKernelLock();
   printf("NTC scan initing..\r\n");
   osKernelUnlock();
-  NTC_t ntc;
-  osMessageQueueGet(message.ntc, &ntc, NULL, 100);
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
   while (1) {
     // get_ntc(); TODO
     osMessageQueuePut(message.ntc, &ntc, 0, 0);
-    osKernelLock();
-    printf("03\r\n");
-    osKernelUnlock();
-    tick+=1000;
+    tick+=20;
     osDelayUntil(tick);
   }
   /* USER CODE END Task_NTC_scan_f */
@@ -571,19 +563,16 @@ void Task_NTC_scan_f(void *argument) {
 /* USER CODE END Header_Task_led_f */
 void Task_led_f(void *argument) {
   /* USER CODE BEGIN Task_led_f */
+  led_t led;
+  osMessageQueueGet(message.led, &led, NULL, osWaitForever);
   osKernelLock();
   printf("led initing..\r\n");
   osKernelUnlock();
-  led_t led;
-  osMessageQueueGet(message.key, &led, NULL, 100);
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
   while (1) {
     osMessageQueueGet(message.key, &led, NULL, 1);
     // control_led(); TODO
-    osKernelLock();
-    printf("04\r\n");
-    osKernelUnlock();
     tick+=20;
     osDelayUntil(tick);
   }
@@ -599,19 +588,16 @@ void Task_led_f(void *argument) {
 /* USER CODE END Header_Task_display_f */
 void Task_display_f(void *argument) {
   /* USER CODE BEGIN Task_display_f */
+  display_t display;
+  osMessageQueueGet(message.display, &display, NULL, osWaitForever);
   osKernelLock();
   printf("display initing..\r\n");
   osKernelUnlock();
-  display_t display;
-  osMessageQueueGet(message.key, &display, NULL, 100);
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
   while (1) {
     osMessageQueueGet(message.display, &display, NULL, 1);
     // display_control();
-    osKernelLock();
-    printf("05\r\n");
-    osKernelUnlock();
     tick+=20;
     osDelayUntil(tick);
   }
@@ -627,19 +613,16 @@ void Task_display_f(void *argument) {
 /* USER CODE END Header_Task_output_f */
 void Task_output_f(void *argument) {
   /* USER CODE BEGIN Task_output_f */
+  pwm_t pwm;
+  osMessageQueueGet(message.pwm, &pwm, NULL, osWaitForever);
   osKernelLock();
   printf("output initing..\r\n");
   osKernelUnlock();
-  pwm_t pwm;
-  osMessageQueueGet(message.key, &pwm, NULL, 100);
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
   while (1) {
     osMessageQueueGet(message.pwm, &pwm, NULL, 1);
     // pwm_control(); TODO
-    osKernelLock();
-    printf("06\r\n");
-    osKernelUnlock();
     tick+=20;
     osDelayUntil(tick);
   }
