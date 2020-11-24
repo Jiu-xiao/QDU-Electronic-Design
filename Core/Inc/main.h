@@ -98,20 +98,40 @@ typedef float NTC_t;
 
 typedef uint8_t pwm_t;
 
-typedef enum{
+typedef enum {
   relax_mode,
   sleep_mode,
   nature_mode,
   common_mode,
 } Mode_t;
 
+typedef enum {
+  key_work_mode,
+  key_timeing_mode,
+  key_stop,
+  key_show,
+} key_mode_t;
+
+typedef enum {
+  zero,
+  one,
+  two,
+} timeing_mode_t;
+
+typedef enum {
+  temperature,
+  work,
+} display_mode_t;
+
 typedef struct {
-  key_t key;
+  key_mode_t key;
   NTC_t ntc;
   pwm_t pwm;
   display_t display;
   led_t led;
   Mode_t mode;
+  timeing_mode_t timeing_mode;
+  display_mode_t display_mode;
 } data_t;
 
 #ifdef __cplusplus

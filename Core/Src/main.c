@@ -395,10 +395,11 @@ void Task_center_f(void *argument) {
   /* USER CODE BEGIN 5 */
   osKernelLock();
   printf("center initing..\r\n");
-  data_t data = {0};
+  data_t data;
+  uint16_t time=0;
   data.mode = relax_mode;
   message.display = osMessageQueueNew(6u, sizeof(display_t), NULL);
-  message.key = osMessageQueueNew(6u, sizeof(key_t), NULL);
+  message.key = osMessageQueueNew(6u, sizeof(key_mode_t), NULL);
   message.led = osMessageQueueNew(6u, sizeof(led_t), NULL);
   message.ntc = osMessageQueueNew(6u, sizeof(NTC_t), NULL);
   message.pwm = osMessageQueueNew(6u, sizeof(pwm_t), NULL);
@@ -411,29 +412,94 @@ void Task_center_f(void *argument) {
 
   /* Infinite loop */
   while (1) {
+    if(data.timeing_mode!=zero&&time<=0){
+      data.timeing_mode=zero;
+      data.mode=relax_mode;
+    }
+    if(time>0)time-=10;
+    uint32_t tick = osKernelGetTickCount();
     if (osMessageQueueGet(message.key, &data.key, NULL, 1) ==
         osOK) /* 有按键按下 */ {
-      // do something
+      switch (data.key) {
+        case key_work_mode:
+          switch (data.mode) {
+            case relax_mode:
+              data.mode = nature_mode;
+              break;
+            case nature_mode:
+              data.mode = common_mode;
+              break;
+            case common_mode:
+              data.mode = nature_mode;
+              break;
+          }
+          break;
+        case key_stop:
+          data.mode = relax_mode;
+          data.timeing_mode = zero;
+          break;
+        case key_show:
+          switch (data.display_mode) {
+            case work:
+              data.display_mode = temperature;
+              break;
+            case temperature:
+              data.display_mode = work;
+              break;
+          }
+          break;
+        case key_timeing_mode:
+          switch (data.timeing_mode) {
+            case zero:
+              data.timeing_mode = one;
+              break;
+            case one:
+              data.timeing_mode = two;
+              break;
+            case two:
+              data.timeing_mode = zero;
+              break;
+          }
+          time=data.timeing_mode*1000*60;
+          break;
+      };
     }
     osMessageQueueGet(message.ntc, &data.ntc, NULL, 1); /* 实时刷新温度 */
     // do something
     osMessageQueuePut(message.display, &data.display, 0, 0);
-    osMessageQueuePut(message.led, &data.led, 0, 0);
     switch (data.mode) {
-      case relax_mode: /* pwm:0 */
+      case relax_mode:
+        data.pwm = 0;
+        data.led.a = 0;
+        data.led.b = 0;
+        data.led.c = 0;
         break;
-      case sleep_mode: /* pwm:20 */
+      case sleep_mode:
+        data.pwm = 20;
+        data.led.a = 1;
+        data.led.b = 0;
+        data.led.c = 0;
         break;
-      case nature_mode: /* pwm:30 */
+      case nature_mode:
+        data.pwm = 30;
+        data.led.a = 0;
+        data.led.b = 1;
+        data.led.c = 0;
         break;
-      case common_mode: /* pwm:70 */
+      case common_mode:
+        data.pwm = 70;
+        data.led.a = 0;
+        data.led.b = 0;
+        data.led.c = 1;
         break;
     }
     osMessageQueuePut(message.pwm, &data.pwm, 0, 0);
-    osDelay(1000);
+    osMessageQueuePut(message.led, &data.led, 0, 0);
     osKernelLock();
     printf("center is here\r\n");
     osKernelUnlock();
+    tick+=10;
+    osDelayUntil(tick);
   }
   /* USER CODE END 5 */
 }
@@ -450,7 +516,7 @@ void Task_key_scan_f(void *argument) {
   osKernelLock();
   printf("key scan initing..\r\n");
   osKernelUnlock();
-  key_t key;
+  key_mode_t key;
   osMessageQueueGet(message.key, &key, NULL, osWaitForever);
   /* Infinite loop */
   while (1) {
