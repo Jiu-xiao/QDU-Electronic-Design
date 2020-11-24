@@ -98,6 +98,14 @@ typedef float NTC_t;
 
 typedef uint8_t pwm_t;
 
+typedef struct {
+  key_t key;
+  NTC_t ntc;
+  pwm_t pwm;
+  display_t display;
+  led_t led;
+} data_t;
+
 #ifdef __cplusplus
 }
 #endif
