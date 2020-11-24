@@ -395,7 +395,7 @@ void Task_center_f(void *argument) {
   /* USER CODE BEGIN 5 */
   osKernelLock();
   printf("center initing..\r\n");
-  uint16_t time = 0;
+  uint32_t time = 0;
   data.mode = relax_mode;
   data.timeing_mode = zero;
   data.display_mode = work;
@@ -404,6 +404,7 @@ void Task_center_f(void *argument) {
   osKernelUnlock();
   /* Infinite loop */
   while (1) {
+    if(data.timeing_mode!=zero)printf("%d\r\n",time/1000);
     uint32_t tick = osKernelGetTickCount();
     if (data.timeing_mode != zero && time <= 0) {
       data.timeing_mode = zero;
@@ -447,15 +448,20 @@ void Task_center_f(void *argument) {
           switch (data.timeing_mode) {
             case zero:
               data.timeing_mode = one;
+              time=1000*60;
+              printf("zero\r\n");
               break;
             case one:
               data.timeing_mode = two;
+              printf("one\r\n");
+              time=2000*60;
               break;
             case two:
               data.timeing_mode = zero;
+              printf("two\r\n");
+              time=0;
               break;
           }
-          time = data.timeing_mode * 1000 * 60;
           break;
       };
     }
@@ -505,14 +511,38 @@ void Task_key_scan_f(void *argument) {
   printf("key scan initing..\r\n");
   osKernelUnlock();
   uint32_t tick = osKernelGetTickCount();
-  int sign = 0, a;
+  int sign1 = 0, sign2 = 0, sign3 = 0, sign4 = 0, a;
   /* Infinite loop */
   while (1) {
     a = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6);
-    if (a && sign > 0) sign--;
-    if (!a && sign == 0) {
+    if (a && sign1 > 0) sign1--;
+    if (!a && sign1 == 0) {
       data.key = key_work_mode;
-      sign = 30;
+      sign1 = 30;
+      data.key_sign++;
+      printf("input\r\n");
+    }
+    a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0);
+    if (a && sign2 > 0) sign2--;
+    if (!a && sign2 == 0) {
+      data.key = key_timeing_mode;
+      sign2 = 30;
+      data.key_sign++;
+      printf("input\r\n");
+    }
+    a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1);
+    if (a && sign3 > 0) sign3--;
+    if (!a && sign3 == 0) {
+      data.key = key_stop;
+      sign3 = 30;
+      data.key_sign++;
+      printf("input\r\n");
+    }
+    a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_2);
+    if (a && sign4 > 0) sign4--;
+    if (!a && sign4 == 0) {
+      data.key = key_show;
+      sign4 = 30;
       data.key_sign++;
       printf("input\r\n");
     }
@@ -615,7 +645,6 @@ void Task_output_f(void *argument) {
   /* Infinite loop */
   while (1) {
     // pwm_control(); TODO
-    printf("%d\r\n", data.pwm);
     tick += 20;
     osDelayUntil(tick);
   }
