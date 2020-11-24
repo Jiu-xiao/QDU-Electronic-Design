@@ -99,3 +99,5 @@ JLinkLog.txt
 
 # CubeMX
 .mxproject
+MDK-ARM/.vscode/uv4.log
+MDK-ARM/.vscode/uv4.log.lock
