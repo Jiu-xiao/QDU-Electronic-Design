@@ -23,7 +23,6 @@
 #include "cmsis_os.h"
 #include "stdio.h"
 
-message_t message;
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -391,49 +390,42 @@ static void MX_GPIO_Init(void) {
  * @retval None
  */
 /* USER CODE END Header_Task_center_f */
+data_t data;
 void Task_center_f(void *argument) {
   /* USER CODE BEGIN 5 */
   osKernelLock();
   printf("center initing..\r\n");
-  data_t data;
-  uint16_t time=0;
+  uint16_t time = 0;
   data.mode = relax_mode;
-  data.timeing_mode=zero;
-  data.display_mode=work;
-  data.key=key_work_mode;
-  message.display = osMessageQueueNew(6u, sizeof(display_t), NULL);
-  message.key = osMessageQueueNew(6u, sizeof(key_mode_t), NULL);
-  message.led = osMessageQueueNew(6u, sizeof(led_t), NULL);
-  message.ntc = osMessageQueueNew(6u, sizeof(NTC_t), NULL);
-  message.pwm = osMessageQueueNew(6u, sizeof(pwm_t), NULL);
-  osMessageQueuePut(message.display, &data.display, 0, 0);
-  osMessageQueuePut(message.led, &data.led, 0, 0);
-  osMessageQueuePut(message.key, &data.key, 0, 0);
-  osMessageQueuePut(message.key, &data.key, 0, 0);
-  osMessageQueuePut(message.ntc, &data.ntc, 0, 0);
-  osMessageQueuePut(message.pwm, &data.pwm, 0, 0);
+  data.timeing_mode = zero;
+  data.display_mode = work;
+  data.key = key_work_mode;
+  data.key_sign = 0;
   osKernelUnlock();
   /* Infinite loop */
   while (1) {
     uint32_t tick = osKernelGetTickCount();
-    if(data.timeing_mode!=zero&&time<=0){
-      data.timeing_mode=zero;
-      data.mode=relax_mode;
+    if (data.timeing_mode != zero && time <= 0) {
+      data.timeing_mode = zero;
+      data.mode = relax_mode;
     }
-    if(time>0)time-=20;
-    if (osMessageQueueGet(message.key, &data.key, NULL, 0) ==
-        osOK) /* 有按键按下 */ {
+    if (time > 0) time -= 20;
+    if (data.key_sign) /* 有按键按下 */ {
+      data.key_sign = 0;
       switch (data.key) {
         case key_work_mode:
           switch (data.mode) {
             case relax_mode:
+              data.mode = sleep_mode;
+              break;
+            case sleep_mode:
               data.mode = nature_mode;
               break;
             case nature_mode:
               data.mode = common_mode;
               break;
             case common_mode:
-              data.mode = nature_mode;
+              data.mode = sleep_mode;
               break;
           }
           break;
@@ -463,42 +455,38 @@ void Task_center_f(void *argument) {
               data.timeing_mode = zero;
               break;
           }
-          time=data.timeing_mode*1000*60;
+          time = data.timeing_mode * 1000 * 60;
           break;
       };
     }
-    osMessageQueueGet(message.ntc, &data.ntc, NULL, 1); /* 实时刷新温度 */
     // do something
-    osMessageQueuePut(message.display, &data.display, 0, 0);
     switch (data.mode) {
       case relax_mode:
         data.pwm = 0;
-        data.led.a = 0;
-        data.led.b = 0;
-        data.led.c = 0;
+        data.led1 = 1;
+        data.led2 = 2;
+        data.led3 = 3;
         break;
       case sleep_mode:
         data.pwm = 20;
-        data.led.a = 1;
-        data.led.b = 0;
-        data.led.c = 0;
+        data.led1 = 1;
+        data.led2 = 0;
+        data.led3 = 0;
         break;
       case nature_mode:
         data.pwm = 30;
-        data.led.a = 0;
-        data.led.b = 1;
-        data.led.c = 0;
+        data.led1 = 0;
+        data.led2 = 1;
+        data.led3 = 0;
         break;
       case common_mode:
         data.pwm = 70;
-        data.led.a = 0;
-        data.led.b = 0;
-        data.led.c = 1;
+        data.led1 = 0;
+        data.led2 = 0;
+        data.led3 = 1;
         break;
     }
-    osMessageQueuePut(message.pwm, &data.pwm, 0, 0);
-    osMessageQueuePut(message.led, &data.led, 0, 0);
-    tick+=20;
+    tick += 20;
     osDelayUntil(tick);
   }
   /* USER CODE END 5 */
@@ -513,25 +501,22 @@ void Task_center_f(void *argument) {
 /* USER CODE END Header_Task_key_scan_f */
 void Task_key_scan_f(void *argument) {
   /* USER CODE BEGIN Task_key_scan_f */
-  key_mode_t key;
-  osMessageQueueGet(message.key, &key, NULL, osWaitForever);
   osKernelLock();
   printf("key scan initing..\r\n");
   osKernelUnlock();
   uint32_t tick = osKernelGetTickCount();
-  int sign=0,a;
-  key_mode_t key_mode;
+  int sign = 0, a;
   /* Infinite loop */
   while (1) {
-    a=HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_6);
-    if(a&&sign>0)sign--;
-    if(!a&&sign==0){
-      key_mode=key_work_mode;
-      osMessageQueuePut(message.key,&key_mode,NULL,0);
-      sign=30;
+    a = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6);
+    if (a && sign > 0) sign--;
+    if (!a && sign == 0) {
+      data.key = key_work_mode;
+      sign = 30;
+      data.key_sign++;
       printf("input\r\n");
     }
-    tick+=5;
+    tick += 5;
     osDelayUntil(tick);
   }
   /* USER CODE END Task_key_scan_f */
@@ -546,8 +531,6 @@ void Task_key_scan_f(void *argument) {
 /* USER CODE END Header_Task_NTC_scan_f */
 void Task_NTC_scan_f(void *argument) {
   /* USER CODE BEGIN Task_NTC_scan_f */
-  NTC_t ntc;
-  osMessageQueueGet(message.ntc, &ntc, NULL, osWaitForever);
   osKernelLock();
   printf("NTC scan initing..\r\n");
   osKernelUnlock();
@@ -555,8 +538,7 @@ void Task_NTC_scan_f(void *argument) {
   /* Infinite loop */
   while (1) {
     // get_ntc(); TODO
-    osMessageQueuePut(message.ntc, &ntc, 0, 0);
-    tick+=20;
+    tick += 20;
     osDelayUntil(tick);
   }
   /* USER CODE END Task_NTC_scan_f */
@@ -571,17 +553,25 @@ void Task_NTC_scan_f(void *argument) {
 /* USER CODE END Header_Task_led_f */
 void Task_led_f(void *argument) {
   /* USER CODE BEGIN Task_led_f */
-  led_t led;
-  osMessageQueueGet(message.led, &led, NULL, osWaitForever);
   osKernelLock();
-  printf("led initing..\r\n");
+  // printf("led initing..\r\n");
   osKernelUnlock();
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
   while (1) {
-    osMessageQueueGet(message.key, &led, NULL, 1);
-    // control_led(); TODO
-    tick+=20;
+    if (data.led1)
+      HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_RESET);
+    else
+      HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_SET);
+    if (data.led2)
+      HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_RESET);
+    else
+      HAL_GPIO_WritePin(GPIOC, GPIO_PIN_8, GPIO_PIN_SET);
+    if (data.led3)
+      HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_RESET);
+    else
+      HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);
+    tick += 20;
     osDelayUntil(tick);
   }
   /* USER CODE END Task_led_f */
@@ -596,17 +586,14 @@ void Task_led_f(void *argument) {
 /* USER CODE END Header_Task_display_f */
 void Task_display_f(void *argument) {
   /* USER CODE BEGIN Task_display_f */
-  display_t display;
-  osMessageQueueGet(message.display, &display, NULL, osWaitForever);
   osKernelLock();
   printf("display initing..\r\n");
   osKernelUnlock();
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
   while (1) {
-    osMessageQueueGet(message.display, &display, NULL, 1);
     // display_control();
-    tick+=20;
+    tick += 20;
     osDelayUntil(tick);
   }
   /* USER CODE END Task_display_f */
@@ -621,17 +608,15 @@ void Task_display_f(void *argument) {
 /* USER CODE END Header_Task_output_f */
 void Task_output_f(void *argument) {
   /* USER CODE BEGIN Task_output_f */
-  pwm_t pwm;
-  osMessageQueueGet(message.pwm, &pwm, NULL, osWaitForever);
   osKernelLock();
   printf("output initing..\r\n");
   osKernelUnlock();
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
   while (1) {
-    osMessageQueueGet(message.pwm, &pwm, NULL, 1);
     // pwm_control(); TODO
-    tick+=20;
+    printf("%d\r\n", data.pwm);
+    tick += 20;
     osDelayUntil(tick);
   }
   /* USER CODE END Task_output_f */

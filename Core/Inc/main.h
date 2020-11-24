@@ -63,20 +63,7 @@ void Error_Handler(void);
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
-typedef struct {
-  void *key;
-  void *ntc;
-  void *pwm;
-  void *display;
-  void *led;
-} message_t;
-
-typedef struct {
-  uint8_t a;
-  uint8_t b;
-  uint8_t c;
-} led_t;
-
+typedef uint8_t key_sign_t;
 typedef struct {
   uint8_t a;
   uint8_t b;
@@ -97,6 +84,7 @@ typedef struct {
 typedef float NTC_t;
 
 typedef uint8_t pwm_t;
+typedef uint8_t led_t;
 
 typedef enum {
   relax_mode,
@@ -124,12 +112,15 @@ typedef enum {
 } display_mode_t;
 
 typedef struct {
+  key_sign_t key_sign;
   key_mode_t key;
   NTC_t ntc;
-  pwm_t pwm;
   display_t display;
-  led_t led;
+  led_t led1;
+  led_t led2;
+  led_t led3;
   Mode_t mode;
+  pwm_t pwm;
   timeing_mode_t timeing_mode;
   display_mode_t display_mode;
 } data_t;
