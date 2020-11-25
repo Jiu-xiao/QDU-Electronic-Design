@@ -646,12 +646,19 @@ void Task_output_f(void *argument) {
   osKernelLock();
   printf("output initing..\r\n");
   osKernelUnlock();
+  HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_4);
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
+  int pwm=0;
   while (1) {
+    if(pwm!=data.pwm){
+      pwm=data.pwm;
+      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4,pwm);
+    }
     // pwm_control(); TODO
     tick += 20;
     osDelayUntil(tick);
+    
   }
   /* USER CODE END Task_output_f */
 }
