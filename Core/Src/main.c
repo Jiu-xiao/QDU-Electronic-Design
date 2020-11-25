@@ -21,6 +21,8 @@
 #include "main.h"
 
 #include "cmsis_os.h"
+#include "delay.h"
+#include "ds18b20.h"
 #include "stdio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -344,8 +346,8 @@ static void MX_GPIO_Init(void) {
   /*Configure GPIO pin : PA0 */
   GPIO_InitStruct.Pin = GPIO_PIN_0;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PB0 PB1 PB2 */
@@ -404,7 +406,7 @@ void Task_center_f(void *argument) {
   osKernelUnlock();
   /* Infinite loop */
   while (1) {
-    if(data.timeing_mode!=zero)printf("%d\r\n",time/1000);
+    if (data.timeing_mode != zero) printf("%d\r\n", time / 1000);
     uint32_t tick = osKernelGetTickCount();
     if (data.timeing_mode != zero && time <= 0) {
       data.timeing_mode = zero;
@@ -448,18 +450,18 @@ void Task_center_f(void *argument) {
           switch (data.timeing_mode) {
             case zero:
               data.timeing_mode = one;
-              time=1000*60;
+              time = 1000 * 60;
               printf("zero\r\n");
               break;
             case one:
               data.timeing_mode = two;
               printf("one\r\n");
-              time=2000*60;
+              time = 2000 * 60;
               break;
             case two:
               data.timeing_mode = zero;
               printf("two\r\n");
-              time=0;
+              time = 0;
               break;
           }
           break;
@@ -562,13 +564,16 @@ void Task_key_scan_f(void *argument) {
 void Task_NTC_scan_f(void *argument) {
   /* USER CODE BEGIN Task_NTC_scan_f */
   osKernelLock();
+  delay_init(72);
+  while (!DS18B20_Check());
   printf("NTC scan initing..\r\n");
   osKernelUnlock();
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
   while (1) {
     // get_ntc(); TODO
-    tick += 20;
+    printf("%d\r\n", DS18B20_Get_Temp());
+    tick += 40;
     osDelayUntil(tick);
   }
   /* USER CODE END Task_NTC_scan_f */
