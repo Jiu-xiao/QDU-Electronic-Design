@@ -95,7 +95,7 @@ typedef enum {
 
 typedef enum {
   key_work_mode,
-  key_timeing_mode,
+  key_timing_mode,
   key_stop,
   key_show,
 } key_mode_t;
@@ -104,7 +104,7 @@ typedef enum {
   zero,
   one,
   two,
-} timeing_mode_t;
+} timing_mode_t;
 
 typedef enum {
   temperature,
@@ -121,7 +121,7 @@ typedef struct {
   led_t led3;
   Mode_t mode;
   pwm_t pwm;
-  timeing_mode_t timeing_mode;
+  timing_mode_t timing_mode;
   display_mode_t display_mode;
 } data_t;
 

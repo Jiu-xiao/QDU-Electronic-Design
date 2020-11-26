@@ -114,12 +114,14 @@ void Task_output_f(void *argument);
  * @brief  The application entry point.
  * @retval int
  */
-int fputc(int ch, FILE *f) {
+int fputc(int ch, FILE *f)
+{
   uint8_t temp[1] = {ch};
   HAL_UART_Transmit(&huart1, temp, 1, 2);
   return 0;
 }
-int main(void) {
+int main(void)
+{
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -200,7 +202,8 @@ int main(void) {
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1) {
+  while (1)
+  {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -212,7 +215,8 @@ int main(void) {
  * @brief System Clock Configuration
  * @retval None
  */
-void SystemClock_Config(void) {
+void SystemClock_Config(void)
+{
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
@@ -226,7 +230,8 @@ void SystemClock_Config(void) {
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+  {
     Error_Handler();
   }
   /** Initializes the CPU, AHB and APB buses clocks
@@ -238,7 +243,8 @@ void SystemClock_Config(void) {
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+  {
     Error_Handler();
   }
 }
@@ -248,7 +254,8 @@ void SystemClock_Config(void) {
  * @param None
  * @retval None
  */
-static void MX_TIM2_Init(void) {
+static void MX_TIM2_Init(void)
+{
   /* USER CODE BEGIN TIM2_Init 0 */
 
   /* USER CODE END TIM2_Init 0 */
@@ -265,19 +272,22 @@ static void MX_TIM2_Init(void) {
   htim2.Init.Period = 65535;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK) {
+  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
+  {
     Error_Handler();
   }
   sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK) {
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+  {
     Error_Handler();
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
   sConfigOC.Pulse = 0;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_4) != HAL_OK) {
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
+  {
     Error_Handler();
   }
   /* USER CODE BEGIN TIM2_Init 2 */
@@ -291,7 +301,8 @@ static void MX_TIM2_Init(void) {
  * @param None
  * @retval None
  */
-static void MX_USART1_UART_Init(void) {
+static void MX_USART1_UART_Init(void)
+{
   /* USER CODE BEGIN USART1_Init 0 */
 
   /* USER CODE END USART1_Init 0 */
@@ -307,7 +318,8 @@ static void MX_USART1_UART_Init(void) {
   huart1.Init.Mode = UART_MODE_TX_RX;
   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   huart1.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&huart1) != HAL_OK) {
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
     Error_Handler();
   }
   /* USER CODE BEGIN USART1_Init 2 */
@@ -320,7 +332,8 @@ static void MX_USART1_UART_Init(void) {
  * @param None
  * @retval None
  */
-static void MX_GPIO_Init(void) {
+static void MX_GPIO_Init(void)
+{
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
@@ -393,106 +406,117 @@ static void MX_GPIO_Init(void) {
  */
 /* USER CODE END Header_Task_center_f */
 data_t data;
-void Task_center_f(void *argument) {
+void Task_center_f(void *argument)
+{
   /* USER CODE BEGIN 5 */
   osKernelLock();
   printf("center initing..\r\n");
   uint32_t time = 0;
   data.mode = relax_mode;
-  data.timeing_mode = zero;
+  data.timing_mode = zero;
   data.display_mode = work;
   data.key = key_work_mode;
   data.key_sign = 0;
   osKernelUnlock();
   /* Infinite loop */
-  while (1) {
-    if (data.timeing_mode != zero) printf("%d\r\n", time / 1000);
+  while (1)
+  {
+    if (data.timing_mode != zero)
+      printf("%d\r\n", time / 1000);
     uint32_t tick = osKernelGetTickCount();
-    if (data.timeing_mode != zero && time <= 0) {
-      data.timeing_mode = zero;
+    if (data.timing_mode != zero && time <= 0)
+    {
+      data.timing_mode = zero;
       data.mode = relax_mode;
     }
-    if (time > 0) time -= 20;
-    if (data.key_sign) /* 有按键按下 */ {
+    if (time > 0)
+      time -= 20;
+    if (data.key_sign) /* 有按键按下 */
+    {
       data.key_sign = 0;
-      switch (data.key) {
-        case key_work_mode:
-          switch (data.mode) {
-            case relax_mode:
-              data.mode = sleep_mode;
-              break;
-            case sleep_mode:
-              data.mode = nature_mode;
-              break;
-            case nature_mode:
-              data.mode = common_mode;
-              break;
-            case common_mode:
-              data.mode = sleep_mode;
-              break;
-          }
+      switch (data.key)
+      {
+      case key_work_mode:
+        switch (data.mode)
+        {
+        case relax_mode:
+          data.mode = sleep_mode;
           break;
-        case key_stop:
-          data.mode = relax_mode;
-          data.timeing_mode = zero;
+        case sleep_mode:
+          data.mode = nature_mode;
           break;
-        case key_show:
-          switch (data.display_mode) {
-            case work:
-              data.display_mode = temperature;
-              break;
-            case temperature:
-              data.display_mode = work;
-              break;
-          }
+        case nature_mode:
+          data.mode = common_mode;
           break;
-        case key_timeing_mode:
-          switch (data.timeing_mode) {
-            case zero:
-              data.timeing_mode = one;
-              time = 1000 * 60;
-              printf("zero\r\n");
-              break;
-            case one:
-              data.timeing_mode = two;
-              printf("one\r\n");
-              time = 2000 * 60;
-              break;
-            case two:
-              data.timeing_mode = zero;
-              printf("two\r\n");
-              time = 0;
-              break;
-          }
+        case common_mode:
+          data.mode = sleep_mode;
           break;
+        }
+        break;
+      case key_stop:
+        data.mode = relax_mode;
+        data.timing_mode = zero;
+        break;
+      case key_show:
+        switch (data.display_mode)
+        {
+        case work:
+          data.display_mode = temperature;
+          break;
+        case temperature:
+          data.display_mode = work;
+          break;
+        }
+        break;
+      case key_timing_mode:
+        switch (data.timing_mode)
+        {
+        case zero:
+          data.timing_mode = one;
+          time = 1000 * 60;
+          printf("zero\r\n");
+          break;
+        case one:
+          data.timing_mode = two;
+          printf("one\r\n");
+          time = 2000 * 60;
+          break;
+        case two:
+          data.timing_mode = zero;
+          printf("two\r\n");
+          time = 0;
+          break;
+        }
+        break;
       };
     }
     // do something
-    switch (data.mode) {
-      case relax_mode:
-        data.pwm = 0;
-        data.led1 = 1;
-        data.led2 = 2;
-        data.led3 = 3;
-        break;
-      case sleep_mode:
-        data.pwm = 20;
-        data.led1 = 1;
-        data.led2 = 0;
-        data.led3 = 0;
-        break;
-      case nature_mode:
-        data.pwm = 30;
-        data.led1 = 0;
-        data.led2 = 1;
-        data.led3 = 0;
-        break;
-      case common_mode:
-        data.pwm = 70;
-        data.led1 = 0;
-        data.led2 = 0;
-        data.led3 = 1;
-        break;
+    switch (data.mode)
+    {
+    case relax_mode:
+      data.pwm = 0;
+      data.led1 = 1;
+      data.led2 = 2;
+      data.led3 = 3;
+      break;
+    case sleep_mode:
+      data.pwm = 20;
+      data.led1 = 1;
+      data.led2 = 0;
+      data.led3 = 0;
+      break;
+    case nature_mode:
+      data.pwm = 30;
+      data.led1 = 0;
+      data.led2 = 1;
+      data.led3 = 0;
+      break;
+    case common_mode:
+      data.pwm = 70;
+      data.led1 = 0;
+      data.led2 = 0;
+      data.led3 = 1;
+      break;
     }
     tick += 20;
     osDelayUntil(tick);
@@ -507,7 +531,8 @@ void Task_center_f(void *argument) {
  * @retval None
  */
 /* USER CODE END Header_Task_key_scan_f */
-void Task_key_scan_f(void *argument) {
+void Task_key_scan_f(void *argument)
+{
   /* USER CODE BEGIN Task_key_scan_f */
   osKernelLock();
   printf("key scan initing..\r\n");
@@ -515,34 +540,43 @@ void Task_key_scan_f(void *argument) {
   uint32_t tick = osKernelGetTickCount();
   int sign1 = 0, sign2 = 0, sign3 = 0, sign4 = 0, a;
   /* Infinite loop */
-  while (1) {
+  while (1)
+  {
     a = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6);
-    if (a && sign1 > 0) sign1--;
-    if (!a && sign1 == 0) {
+    if (a && sign1 > 0)
+      sign1--;
+    if (!a && sign1 == 0)
+    {
       data.key = key_work_mode;
       sign1 = 30;
       data.key_sign++;
       printf("input\r\n");
     }
     a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0);
-    if (a && sign2 > 0) sign2--;
-    if (!a && sign2 == 0) {
-      data.key = key_timeing_mode;
+    if (a && sign2 > 0)
+      sign2--;
+    if (!a && sign2 == 0)
+    {
+      data.key = key_timing_mode;
       sign2 = 30;
       data.key_sign++;
       printf("input\r\n");
     }
     a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1);
-    if (a && sign3 > 0) sign3--;
-    if (!a && sign3 == 0) {
+    if (a && sign3 > 0)
+      sign3--;
+    if (!a && sign3 == 0)
+    {
       data.key = key_stop;
       sign3 = 30;
       data.key_sign++;
       printf("input\r\n");
     }
     a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_2);
-    if (a && sign4 > 0) sign4--;
-    if (!a && sign4 == 0) {
+    if (a && sign4 > 0)
+      sign4--;
+    if (!a && sign4 == 0)
+    {
       data.key = key_show;
       sign4 = 30;
       data.key_sign++;
@@ -561,16 +595,19 @@ void Task_key_scan_f(void *argument) {
  * @retval None
  */
 /* USER CODE END Header_Task_NTC_scan_f */
-void Task_NTC_scan_f(void *argument) {
+void Task_NTC_scan_f(void *argument)
+{
   /* USER CODE BEGIN Task_NTC_scan_f */
   osKernelLock();
   delay_init(72);
-  while (!DS18B20_Check());
+  while (!DS18B20_Check())
+    ;
   printf("NTC scan initing..\r\n");
   osKernelUnlock();
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
-  while (1) {
+  while (1)
+  {
     // get_ntc(); TODO
     printf("%d\r\n", DS18B20_Get_Temp());
     tick += 40;
@@ -586,14 +623,16 @@ void Task_NTC_scan_f(void *argument) {
  * @retval None
  */
 /* USER CODE END Header_Task_led_f */
-void Task_led_f(void *argument) {
+void Task_led_f(void *argument)
+{
   /* USER CODE BEGIN Task_led_f */
   osKernelLock();
   // printf("led initing..\r\n");
   osKernelUnlock();
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
-  while (1) {
+  while (1)
+  {
     if (data.led1)
       HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_RESET);
     else
@@ -619,14 +658,68 @@ void Task_led_f(void *argument) {
  * @retval None
  */
 /* USER CODE END Header_Task_display_f */
-void Task_display_f(void *argument) {
+uint32_t a_38[8][3] = {{0, 0, 0}, {1, 0, 0}, {0, 1, 0}, {1, 1, 0}, {0, 0, 1}, {1, 0, 1}, {0, 1, 1}, {1, 1, 1}};
+uint32_t b_num[10][8] = {{1, 0, 0, 0, 0, 0, 0, 0}, {0, 1, 0, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0, 0, 0}, {0, 0, 0, 1, 0, 0, 0, 0}, {0, 0, 0, 0, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 1, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 1, 0}, {0, 0, 0, 0, 0, 0, 0, 1}};
+void weixuan(uint8_t cnt, uint8_t num)
+{
+  //38译码器进行位选
+  if (a_38[cnt][0])
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET);
+  else
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_RESET);
+  if (a_38[cnt][1])
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
+  else
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
+  if (a_38[cnt][2])
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
+  else
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
+}
+void Task_display_f(void *argument)
+{
   /* USER CODE BEGIN Task_display_f */
   osKernelLock();
   printf("display initing..\r\n");
   osKernelUnlock();
   uint32_t tick = osKernelGetTickCount();
+  uint32_t cnt = 0;
   /* Infinite loop */
-  while (1) {
+  while (1)
+  {
+    switch (cnt)
+    {
+    case 0:
+      weixuan(cnt, data.display.a); //38译码器进行位选
+      //LED段选
+
+    case 1:
+      weixuan(cnt, data.display.b); //38译码器进行位选
+      //LED段选
+    case 2:
+      weixuan(cnt, data.display.c); //38译码器进行位选
+      //LED段选
+    case 3:
+      weixuan(cnt, data.display.d); //38译码器进行位选
+      //LED段选
+    case 4:
+      weixuan(cnt, data.display.e); //38译码器进行位选
+      //LED段选
+    case 5:
+      weixuan(cnt, data.display.f); //38译码器进行位选
+      //LED段选
+    case 6:
+      weixuan(cnt, data.display.g); //38译码器进行位选
+      //LED段选
+    case 7:
+      weixuan(cnt, data.display.h); //38译码器进行位选
+      //LED段选
+    default:
+      weixuan(0, data.display.a);
+      cnt = 0;
+      break;
+    }
+    cnt++;
     // display_control();
     tick += 20;
     osDelayUntil(tick);
@@ -641,24 +734,26 @@ void Task_display_f(void *argument) {
  * @retval None
  */
 /* USER CODE END Header_Task_output_f */
-void Task_output_f(void *argument) {
+void Task_output_f(void *argument)
+{
   /* USER CODE BEGIN Task_output_f */
   osKernelLock();
   printf("output initing..\r\n");
   osKernelUnlock();
-  HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_4);
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_4);
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
-  int pwm=0;
-  while (1) {
-    if(pwm!=data.pwm){
-      pwm=data.pwm;
-      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4,pwm);
+  int pwm = 0;
+  while (1)
+  {
+    if (pwm != data.pwm)
+    {
+      pwm = data.pwm;
+      __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_4, pwm);
     }
     // pwm_control(); TODO
     tick += 20;
     osDelayUntil(tick);
-    
   }
   /* USER CODE END Task_output_f */
 }
@@ -671,11 +766,13 @@ void Task_output_f(void *argument) {
  * @param  htim : TIM handle
  * @retval None
  */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
   /* USER CODE BEGIN Callback 0 */
 
   /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM1) {
+  if (htim->Instance == TIM1)
+  {
     HAL_IncTick();
   }
   /* USER CODE BEGIN Callback 1 */
@@ -687,7 +784,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
  * @brief  This function is executed in case of error occurrence.
  * @retval None
  */
-void Error_Handler(void) {
+void Error_Handler(void)
+{
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
 
@@ -702,7 +800,8 @@ void Error_Handler(void) {
  * @param  line: assert_param error line source number
  * @retval None
  */
-void assert_failed(uint8_t *file, uint32_t line) {
+void assert_failed(uint8_t *file, uint32_t line)
+{
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line
      number,
