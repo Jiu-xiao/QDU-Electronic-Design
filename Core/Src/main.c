@@ -423,6 +423,155 @@ static void MX_GPIO_Init(void)
  */
 /* USER CODE END Header_Task_center_f */
 data_t data;
+uint8_t a_38[8][3]={{0, 0, 0},{1, 0, 0},{0, 1, 0},{1, 1, 0},{0, 0, 1},{1, 0, 1},{0, 1, 1},{1, 1, 1}};
+void Smg_Select(uint8_t smg, uint8_t num)
+{
+  if(a_38[smg-'a'][0])
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET);
+  else
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_RESET);
+  if(a_38[smg-'a'][1])
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
+  else
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
+  if(a_38[smg-'a'][2])
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
+  else
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);    
+  printf("%c\r\n",num);
+  switch(num)
+  { 
+    case 'r':    //relax模式
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_SET);
+    case '0':
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_RESET);
+      break;
+    case '1':
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_SET);
+      break;
+    case '2':
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_RESET);
+      break;
+    case '3':
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_RESET);
+      break;
+    case '4':
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_SET);
+      break;
+    case '5':
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_SET);
+      break;
+    case '6':
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_SET);
+      break;
+    case '7':
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_SET);
+      break;
+    case '8':
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_SET);
+      break;
+    case '9':
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_SET);
+      break;
+    case '-':
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_SET);
+      break;
+    case 'c':
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_3,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_4,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_5,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_6,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_7,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,GPIO_PIN_SET);
+      break;
+  }
+}
 void Task_center_f(void *argument)
 {
   /* USER CODE BEGIN 5 */
@@ -438,8 +587,8 @@ void Task_center_f(void *argument)
   /* Infinite loop */
   while (1)
   {
-    if (data.timing_mode != zero)
-      printf("%d\r\n", time / 1000);
+    if (data.timing_mode != zero);
+      //printf("%d\r\n", time / 1000);
     uint32_t tick = osKernelGetTickCount();
     if (data.timing_mode != zero && time <= 0)
     {
@@ -454,6 +603,7 @@ void Task_center_f(void *argument)
       switch (data.key)
       {
       case key_work_mode:
+        if(data.timing_mode!=zero)
         switch (data.mode)
         {
         case relax_mode:
@@ -491,16 +641,19 @@ void Task_center_f(void *argument)
         case zero:
           data.timing_mode = one;
           time = 1000 * 60;
+          if(data.mode==relax_mode)data.mode=sleep_mode;
           printf("zero\r\n");
           break;
         case one:
           data.timing_mode = two;
           printf("one\r\n");
+          if(data.mode==relax_mode)data.mode=sleep_mode;
           time = 2000 * 60;
           break;
         case two:
           data.timing_mode = zero;
           printf("two\r\n");
+          if(data.mode==relax_mode)data.mode=relax_mode;
           time = 0;
           break;
         }
@@ -535,6 +688,63 @@ void Task_center_f(void *argument)
       data.led3 = 1;
       break;
     }
+    if(data.display_mode == work)
+    {
+      switch (data.mode)  //工作模式选择
+      {
+        case relax_mode :
+          data.display.a='r';
+          data.display.b='r';
+          data.display.c='r';
+          data.display.d='r';
+          data.display.e='r';
+          data.display.f='r';
+          data.display.g='r';
+          data.display.h='r';
+          break;
+        case sleep_mode : //工作模式为睡眠风
+          data.display.a='-';
+          data.display.b='1';
+          data.display.c='-';
+          data.display.d='r';
+          data.display.e='0';
+          data.display.f=((time/100000)%10)+48;
+          data.display.g=((time/10000)%10)+48;
+          data.display.h=((time/1000)%10)+48;
+          break;
+        case nature_mode : //工作模式为自然风
+          data.display.a='-';
+          data.display.b='2';
+          data.display.c='-';
+          data.display.d='r';
+          data.display.e='0';
+          data.display.f=((time/100000)%10)+48;
+          data.display.g=((time/10000)%10)+48;
+          data.display.h=((time/1000)%10)+48;
+          break;
+        case common_mode : //工作模式为常风
+          data.display.a='-';
+          data.display.b='3';
+          data.display.c='-';
+          data.display.d='r';
+          data.display.e='0';
+          data.display.f=((time/100000)%10)+48;
+          data.display.g=((time/10000)%10)+48;
+          data.display.h=((time/1000)%10)+48;
+          break;
+      }
+    }
+    if(data.display_mode == temperature)
+    {
+      data.display.a='-';
+      data.display.b='4';
+      data.display.c='-';
+      data.display.d='r';
+      data.display.e='r';
+      data.display.f=((data.ntc/100)%10)+48;
+      data.display.g=((data.ntc/10)%10)+48;
+      data.display.h='c';
+    }         
     tick += 20;
     osDelayUntil(tick);
   }
@@ -587,7 +797,7 @@ void Task_key_scan_f(void *argument)
       data.key = key_stop;
       sign3 = 30;
       data.key_sign++;
-      printf("input\r\n");
+      printf("inputstop\r\n");
     }
     a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_2);
     if (a && sign4 > 0)
@@ -597,7 +807,7 @@ void Task_key_scan_f(void *argument)
       data.key = key_show;
       sign4 = 30;
       data.key_sign++;
-      printf("input\r\n");
+      printf("inputshow\r\n");
     }
     tick += 5;
     osDelayUntil(tick);
@@ -625,8 +835,7 @@ void Task_NTC_scan_f(void *argument)
   /* Infinite loop */
   while (1)
   {
-    // get_ntc(); TODO
-    printf("%d\r\n", DS18B20_Get_Temp());
+    data.ntc=DS18B20_Get_Temp();
     tick += 40;
     osDelayUntil(tick);
   }
@@ -675,24 +884,6 @@ void Task_led_f(void *argument)
  * @retval None
  */
 /* USER CODE END Header_Task_display_f */
-uint32_t a_38[8][3] = {{0, 0, 0}, {1, 0, 0}, {0, 1, 0}, {1, 1, 0}, {0, 0, 1}, {1, 0, 1}, {0, 1, 1}, {1, 1, 1}};
-uint32_t b_num[10][8] = {{1, 0, 0, 0, 0, 0, 0, 0}, {0, 1, 0, 0, 0, 0, 0, 0}, {0, 0, 1, 0, 0, 0, 0, 0}, {0, 0, 0, 1, 0, 0, 0, 0}, {0, 0, 0, 0, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 1, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 1, 0}, {0, 0, 0, 0, 0, 0, 0, 1}};
-void weixuan(uint8_t cnt, uint8_t num)
-{
-  //38译码器进行位选
-  if (a_38[cnt][0])
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET);
-  else
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_RESET);
-  if (a_38[cnt][1])
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
-  else
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
-  if (a_38[cnt][2])
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
-  else
-    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
-}
 void Task_display_f(void *argument)
 {
   /* USER CODE BEGIN Task_display_f */
@@ -700,43 +891,42 @@ void Task_display_f(void *argument)
   printf("display initing..\r\n");
   osKernelUnlock();
   uint32_t tick = osKernelGetTickCount();
-  uint32_t cnt = 0;
   /* Infinite loop */
+  uint8_t sum = 0;
   while (1)
   {
-    switch (cnt)
+    switch (sum)
     {
     case 0:
-      weixuan(cnt, data.display.a); //38译码器进行位选
-      //LED段选
-
+      Smg_Select('a', data.display.a);
+      break;
     case 1:
-      weixuan(cnt, data.display.b); //38译码器进行位选
-      //LED段选
+      Smg_Select('b', data.display.b);
+      break;
     case 2:
-      weixuan(cnt, data.display.c); //38译码器进行位选
-      //LED段选
+      Smg_Select('c', data.display.c);
+      break;
     case 3:
-      weixuan(cnt, data.display.d); //38译码器进行位选
-      //LED段选
+      Smg_Select('d', data.display.d);
+      break;
     case 4:
-      weixuan(cnt, data.display.e); //38译码器进行位选
-      //LED段选
+      Smg_Select('e', data.display.e);
+      break;
     case 5:
-      weixuan(cnt, data.display.f); //38译码器进行位选
-      //LED段选
+      Smg_Select('f', data.display.f);
+      break;
     case 6:
-      weixuan(cnt, data.display.g); //38译码器进行位选
-      //LED段选
+      Smg_Select('g', data.display.g);
+      break;
     case 7:
-      weixuan(cnt, data.display.h); //38译码器进行位选
-      //LED段选
+      Smg_Select('h', data.display.h);
+      break;
     default:
-      weixuan(0, data.display.a);
-      cnt = 0;
+      Smg_Select('a', data.display.a);
+      sum = 0;
       break;
     }
-    cnt++;
+    sum++;
     // display_control();
     tick += 20;
     osDelayUntil(tick);

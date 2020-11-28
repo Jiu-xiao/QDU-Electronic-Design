@@ -81,7 +81,7 @@ typedef struct {
   uint8_t c;
 } key_t;
 
-typedef float NTC_t;
+typedef uint32_t NTC_t;
 
 typedef uint8_t pwm_t;
 typedef uint8_t led_t;
