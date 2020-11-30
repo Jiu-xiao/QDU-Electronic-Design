@@ -83,7 +83,7 @@ typedef struct {
 
 typedef uint32_t NTC_t;
 
-typedef uint8_t pwm_t;
+typedef uint16_t pwm_t;
 typedef uint8_t led_t;
 
 typedef enum {

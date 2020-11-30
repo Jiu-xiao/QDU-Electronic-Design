@@ -497,19 +497,19 @@ void Task_center_f(void *argument) {
         data.led3 = 0;
         break;
       case sleep_mode:
-        data.pwm = 20;
+        data.pwm = 180;
         data.led1 = 1;
         data.led2 = 0;
         data.led3 = 0;
         break;
       case nature_mode:
-        data.pwm = 30;
+        data.pwm = 270;
         data.led1 = 0;
         data.led2 = 1;
         data.led3 = 0;
         break;
-      case common_mode:
-        data.pwm = 70;
+      case common_mode:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+        data.pwm = 630;
         data.led1 = 0;
         data.led2 = 0;
         data.led3 = 1;
@@ -734,7 +734,7 @@ void Task_display_f(void *argument) {
         sum = 0;
         break;
     }
-    delay_us(500);
+    delay_ms(500);
     sum++;
     // display_control()
   }
@@ -756,7 +756,7 @@ void Task_output_f(void *argument) {
   HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_4);
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
-  int pwm = 0;
+  uint16_t pwm = 0;
   while (1) {
     if (pwm != data.pwm) {
       pwm = data.pwm;
