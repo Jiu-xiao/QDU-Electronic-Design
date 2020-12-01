@@ -604,7 +604,7 @@ void Task_key_scan_f(void *argument) {
   int sign1 = 0, sign2 = 0, sign3 = 0, sign4 = 0, a;
   /* Infinite loop */
   while (1) {
-    a = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6);
+    a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_2);
     if (a && sign1 > 0) sign1--;
     if (!a && sign1 == 0) {
       data.key = key_work_mode;
@@ -614,7 +614,7 @@ void Task_key_scan_f(void *argument) {
       printf("input\r\n");
 #endif
     }
-    a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0);
+    a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1);
     if (a && sign2 > 0) sign2--;
     if (!a && sign2 == 0) {
       data.key = key_timing_mode;
@@ -624,7 +624,7 @@ void Task_key_scan_f(void *argument) {
       printf("input\r\n");
 #endif
     }
-    a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1);
+    a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0);
     if (a && sign3 > 0) sign3--;
     if (!a && sign3 == 0) {
       data.key = key_stop;
@@ -634,7 +634,7 @@ void Task_key_scan_f(void *argument) {
       printf("input\r\n");
 #endif
     }
-    a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_2);
+    a = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6);
     if (a && sign4 > 0) sign4--;
     if (!a && sign4 == 0) {
       data.key = key_show;
