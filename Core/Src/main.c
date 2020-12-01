@@ -499,7 +499,6 @@ void Task_center_f(void *argument) {
           break;
       };
     }
-    // do something
     switch (data.mode) {
       case relax_mode:
         data.pwm = 0;
@@ -706,7 +705,7 @@ void Task_led_f(void *argument) {
     else
       HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);
     tick += 20;
-    osDelayUntil(tick); 
+    osDelayUntil(tick);
   }
   /* USER CODE END Task_led_f */
 }
@@ -789,7 +788,6 @@ void Task_output_f(void *argument) {
       pwm = data.pwm;
       __HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_4, pwm);
     }
-    // pwm_control(); TODO
     tick += 20;
     osDelayUntil(tick);
   }
