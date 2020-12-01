@@ -734,9 +734,9 @@ void Task_display_f(void *argument) {
         sum = 0;
         break;
     }
-    delay_ms(500);
     sum++;
-    // display_control()
+    tick += 2;
+    osDelayUntil(tick);
   }
   /* USER CODE END Task_display_f */
 }
