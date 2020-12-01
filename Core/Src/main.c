@@ -38,6 +38,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+//#define DEBUG
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -115,11 +116,13 @@ void Task_output_f(void *argument);
  * @brief  The application entry point.
  * @retval int
  */
+#ifdef DEBUG
 int fputc(int ch, FILE *f) {
   uint8_t temp[1] = {ch};
   HAL_UART_Transmit(&huart1, temp, 1, 2);
   return 0;
 }
+#endif
 int main(void) {
   /* USER CODE BEGIN 1 */
 
@@ -410,7 +413,9 @@ data_t data;
 void Task_center_f(void *argument) {
   /* USER CODE BEGIN 5 */
   osKernelLock();
+#ifdef DEBUG
   printf("center initing..\r\n");
+#endif
   uint32_t time = 0;
   data.mode = relax_mode;
   data.timing_mode = zero;
@@ -420,9 +425,9 @@ void Task_center_f(void *argument) {
   osKernelUnlock();
   /* Infinite loop */
   while (1) {
-    if (data.timing_mode != zero)
-      ;
-    // printf("%d\r\n", time / 1000);
+#ifdef DEBUG
+    if (data.timing_mode != zero) printf("%d\r\n", time / 1000);
+#endif
     uint32_t tick = osKernelGetTickCount();
     if (data.timing_mode != zero && time <= 0) {
       data.timing_mode = zero;
@@ -470,17 +475,23 @@ void Task_center_f(void *argument) {
               data.timing_mode = one;
               time = 1000 * 60;
               if (data.mode == relax_mode) data.mode = sleep_mode;
+#ifdef DEBUG
               printf("zero\r\n");
+#endif
               break;
             case one:
               data.timing_mode = two;
+#ifdef DEBUG
               printf("one\r\n");
+#endif
               if (data.mode == relax_mode) data.mode = sleep_mode;
               time = 2000 * 60;
               break;
             case two:
               data.timing_mode = zero;
+#ifdef DEBUG
               printf("two\r\n");
+#endif
               if (data.mode != relax_mode) data.mode = relax_mode;
               time = 0;
               break;
@@ -497,19 +508,19 @@ void Task_center_f(void *argument) {
         data.led3 = 0;
         break;
       case sleep_mode:
-        data.pwm = 180;
+        data.pwm = 200;
         data.led1 = 1;
         data.led2 = 0;
         data.led3 = 0;
         break;
       case nature_mode:
-        data.pwm = 270;
+        data.pwm = 300;
         data.led1 = 0;
         data.led2 = 1;
         data.led3 = 0;
         break;
-      case common_mode:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-        data.pwm = 630;
+      case common_mode:
+        data.pwm = 700;
         data.led1 = 0;
         data.led2 = 0;
         data.led3 = 1;
@@ -584,10 +595,12 @@ void Task_center_f(void *argument) {
  */
 /* USER CODE END Header_Task_key_scan_f */
 void Task_key_scan_f(void *argument) {
-  /* USER CODE BEGIN Task_key_scan_f */
+/* USER CODE BEGIN Task_key_scan_f */
+#ifdef DEBUG
   osKernelLock();
   printf("key scan initing..\r\n");
   osKernelUnlock();
+#endif
   uint32_t tick = osKernelGetTickCount();
   int sign1 = 0, sign2 = 0, sign3 = 0, sign4 = 0, a;
   /* Infinite loop */
@@ -598,7 +611,9 @@ void Task_key_scan_f(void *argument) {
       data.key = key_work_mode;
       sign1 = 30;
       data.key_sign++;
+#ifdef DEBUG
       printf("input\r\n");
+#endif
     }
     a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0);
     if (a && sign2 > 0) sign2--;
@@ -606,7 +621,9 @@ void Task_key_scan_f(void *argument) {
       data.key = key_timing_mode;
       sign2 = 30;
       data.key_sign++;
+#ifdef DEBUG
       printf("input\r\n");
+#endif
     }
     a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_1);
     if (a && sign3 > 0) sign3--;
@@ -614,7 +631,9 @@ void Task_key_scan_f(void *argument) {
       data.key = key_stop;
       sign3 = 30;
       data.key_sign++;
-      printf("inputstop\r\n");
+#ifdef DEBUG
+      printf("input\r\n");
+#endif
     }
     a = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_2);
     if (a && sign4 > 0) sign4--;
@@ -622,9 +641,11 @@ void Task_key_scan_f(void *argument) {
       data.key = key_show;
       sign4 = 30;
       data.key_sign++;
-      printf("inputshow\r\n");
+#ifdef DEBUG
+      printf("input\r\n");
+#endif
     }
-    tick += 5;
+    tick += 3;
     osDelayUntil(tick);
   }
   /* USER CODE END Task_key_scan_f */
@@ -639,12 +660,12 @@ void Task_key_scan_f(void *argument) {
 /* USER CODE END Header_Task_NTC_scan_f */
 void Task_NTC_scan_f(void *argument) {
   /* USER CODE BEGIN Task_NTC_scan_f */
-  osKernelLock();
   delay_init(72);
-  while (!DS18B20_Check())
-    ;
+#ifdef DEBUG
+  osKernelLock();
   printf("NTC scan initing..\r\n");
   osKernelUnlock();
+#endif
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
   while (1) {
@@ -663,10 +684,12 @@ void Task_NTC_scan_f(void *argument) {
  */
 /* USER CODE END Header_Task_led_f */
 void Task_led_f(void *argument) {
-  /* USER CODE BEGIN Task_led_f */
+/* USER CODE BEGIN Task_led_f */
+#ifdef DEBUG
   osKernelLock();
-  // printf("led initing..\r\n");
+  printf("led initing..\r\n");
   osKernelUnlock();
+#endif
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
   while (1) {
@@ -683,7 +706,7 @@ void Task_led_f(void *argument) {
     else
       HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);
     tick += 20;
-    osDelayUntil(tick);
+    osDelayUntil(tick); 
   }
   /* USER CODE END Task_led_f */
 }
@@ -696,10 +719,12 @@ void Task_led_f(void *argument) {
  */
 /* USER CODE END Header_Task_display_f */
 void Task_display_f(void *argument) {
-  /* USER CODE BEGIN Task_display_f */
+/* USER CODE BEGIN Task_display_f */
+#ifdef DEBUG
   osKernelLock();
   printf("display initing..\r\n");
   osKernelUnlock();
+#endif
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
   uint8_t sum = 0;
@@ -749,10 +774,12 @@ void Task_display_f(void *argument) {
  */
 /* USER CODE END Header_Task_output_f */
 void Task_output_f(void *argument) {
-  /* USER CODE BEGIN Task_output_f */
+/* USER CODE BEGIN Task_output_f */
+#ifdef DEBUG
   osKernelLock();
   printf("output initing..\r\n");
   osKernelUnlock();
+#endif
   HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_4);
   uint32_t tick = osKernelGetTickCount();
   /* Infinite loop */
