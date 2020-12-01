@@ -2,15 +2,15 @@
 uint8_t a_38[8][3] = {{0, 0, 0}, {1, 0, 0}, {0, 1, 0}, {1, 1, 0},
                       {0, 0, 1}, {1, 0, 1}, {0, 1, 1}, {1, 1, 1}};
 void Smg_Select(uint8_t smg, uint8_t num) {
-  if (a_38[7 - smg + 'a'][0])
+  if (a_38[smg - 'a'][0])
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_SET);
   else
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_11, GPIO_PIN_RESET);
-  if (a_38[7 - smg + 'a'][1])
+  if (a_38[smg - 'a'][1])
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET);
   else
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET);
-  if (a_38[7 - smg + 'a'][2])
+  if (a_38[smg - 'a'][2])
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_SET);
   else
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_13, GPIO_PIN_RESET);
@@ -52,8 +52,8 @@ void Smg_Select(uint8_t smg, uint8_t num) {
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
       break;
     case '3':
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_SET);
@@ -62,8 +62,8 @@ void Smg_Select(uint8_t smg, uint8_t num) {
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
       break;
     case '4':
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_RESET);
@@ -72,8 +72,8 @@ void Smg_Select(uint8_t smg, uint8_t num) {
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
       break;
     case '5':
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_SET);
@@ -82,8 +82,8 @@ void Smg_Select(uint8_t smg, uint8_t num) {
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
       break;
     case '6':
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_SET);
@@ -92,8 +92,8 @@ void Smg_Select(uint8_t smg, uint8_t num) {
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
       break;
     case '7':
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_SET);
@@ -112,8 +112,8 @@ void Smg_Select(uint8_t smg, uint8_t num) {
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
       break;
     case '9':
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_SET);
@@ -122,8 +122,8 @@ void Smg_Select(uint8_t smg, uint8_t num) {
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
       break;
     case '-':
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_RESET);
@@ -132,8 +132,8 @@ void Smg_Select(uint8_t smg, uint8_t num) {
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
-      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, GPIO_PIN_10, GPIO_PIN_RESET);
       break;
     case 'c':
       HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_SET);
